@@ -4,6 +4,11 @@ import co.com.bancolombia.model.user.User;
 import co.com.bancolombia.usecase.exception.ExcepcionArgumentos;
 import co.com.bancolombia.usecase.exception.ExcepcionCorreoExistente;
 import co.com.bancolombia.usecase.user.UserUseCase;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,10 +29,30 @@ public class UserHandler {
     public static final String PETICION_RECIBIDA_PARA_GUARDAR_UN_NUEVO_USUARIO = "Petición recibida para guardar un nuevo usuario";
     private final UserUseCase userUseCase;
 
-
+    @Operation(
+            operationId = "saveNewUser",
+            summary = "Crear un nuevo usuario",
+            description = "Guarda un nuevo usuario en la base de datos. Se requiere un UserDTO en el cuerpo de la petición.",
+            tags = {"Usuarios"},
+            requestBody = @RequestBody(
+                    description = "Datos del usuario a crear",
+                    required = true,
+                    content = @Content(schema = @Schema(implementation = User.class))
+            ),
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Usuario creado exitosamente",
+                            content = @Content(schema = @Schema(implementation = User.class))
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "La solicitud es inválida o el correo ya existe.",
+                            content = @Content(schema = @Schema(implementation = String.class))
+                    )
+            }
+    )
     public Mono<ServerResponse> listenPOSTSaveUserUsesCase(ServerRequest serverRequest) {
-
-
         log.info(PETICION_RECIBIDA_PARA_GUARDAR_UN_NUEVO_USUARIO);
 
         return serverRequest.bodyToMono(User.class)

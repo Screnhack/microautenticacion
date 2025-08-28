@@ -10,12 +10,12 @@ import reactor.core.publisher.Mono;
 
 @RequiredArgsConstructor
 public class UserUseCase {
-    public static final String NOMBRE_NO_PUEDE_SER_NULO_O_VACIO = "El nombre no puede ser nulo o vacío";
-    public static final String EL_APELLIDO_NO_PUEDE_SER_NULO_O_VACIO = "El apellido no puede ser nulo o vacío";
-    public static final String EL_CORREO_ELECTRONICO_NO_PUEDE_SER_NULO_O_VACIO = "El correo electrónico no puede ser nulo o vacío";
-    public static final String EL_SALARIO_BASE_DEBE_SER_MAYOR_A_CERO = "El salario base debe ser mayor a cero";
-    public static final String EL_CORREO_ELECTRONICO_INGRESADO_YA_SE_ENCUENTRA_REGISTRADO = "El correo electronico ingresado ya se encuentra registrado";
-    public static final String EL_FORMATO_DEL_CORREO_ES_ERRONEO = "El formato del correo es erroneo";
+    private static final String NOMBRE_NO_PUEDE_SER_NULO_O_VACIO = "El nombre no puede ser nulo o vacío";
+    private static final String EL_APELLIDO_NO_PUEDE_SER_NULO_O_VACIO = "El apellido no puede ser nulo o vacío";
+    private static final String EL_CORREO_ELECTRONICO_NO_PUEDE_SER_NULO_O_VACIO = "El correo electrónico no puede ser nulo o vacío";
+    private static final String EL_SALARIO_BASE_DEBE_SER_MAYOR_A_CERO = "El salario base debe ser mayor a cero";
+    private static final String EL_CORREO_ELECTRONICO_INGRESADO_YA_SE_ENCUENTRA_REGISTRADO = "El correo electronico ingresado ya se encuentra registrado";
+    private static final String EL_FORMATO_DEL_CORREO_ES_ERRONEO = "El formato del correo es erroneo";
     private static final Long MIN = 0L;
     private static final Long MAX = 15000000L;
     private final UserRepository userRepository;
@@ -33,9 +33,9 @@ public class UserUseCase {
         return validacionCorreoElectronico(user)
                 .flatMap(correoExistente -> {
                     if (Boolean.TRUE.equals(correoExistente)) {
-                        return userRepository.save(user);
-                    } else {
                         return Mono.error(new ExcepcionCorreoExistente(EL_CORREO_ELECTRONICO_INGRESADO_YA_SE_ENCUENTRA_REGISTRADO));
+                    } else {
+                        return userRepository.save(user);
                     }
                 });
 
