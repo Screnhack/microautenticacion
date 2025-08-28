@@ -19,4 +19,6 @@ public class UseCasesConfig {
         public UserUseCase userUseCase(UserRepository userRepository) {
                 return new UserUseCase(userRepository);
         }
+
+
 }
