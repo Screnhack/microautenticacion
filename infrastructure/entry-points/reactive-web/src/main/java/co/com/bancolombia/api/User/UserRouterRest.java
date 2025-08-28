@@ -17,7 +17,6 @@ public class UserRouterRest {
 
     @Bean
     @RouterOperations({
-            // Documentación completa para el endpoint POST
             @RouterOperation(
                     path = "/api/v1/usuarios",
                     produces = {MediaType.APPLICATION_JSON_VALUE},
@@ -32,7 +31,6 @@ public class UserRouterRest {
                     beanClass = UserHandler.class,
                     beanMethod = "listenGETUseCase"
             ),
-            // Documentación para el endpoint GET /otherusercase
             @RouterOperation(
                     path = "/api/otherusercase/path",
                     produces = {MediaType.APPLICATION_JSON_VALUE},
