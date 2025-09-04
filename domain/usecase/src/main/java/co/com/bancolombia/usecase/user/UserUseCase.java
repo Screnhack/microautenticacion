@@ -1,5 +1,7 @@
 package co.com.bancolombia.usecase.user;
 
+import co.com.bancolombia.model.rol.Rol;
+import co.com.bancolombia.model.rol.gateways.RolRepository;
 import co.com.bancolombia.model.user.User;
 import co.com.bancolombia.model.user.gateways.UserRepository;
 import co.com.bancolombia.usecase.exception.ExcepcionArgumentos;
@@ -19,6 +21,7 @@ public class UserUseCase {
     private static final Long MIN = 0L;
     private static final Long MAX = 15000000L;
     private final UserRepository userRepository;
+    private final RolRepository rolRepository;
 
     public Mono<User> saveUser(User user) {
         try {
@@ -30,20 +33,31 @@ public class UserUseCase {
         } catch (ExcepcionArgumentos e) {
             return Mono.error(e);
         }
-        return validacionCorreoElectronico(user)
-                .flatMap(correoExistente -> {
-                    if (Boolean.TRUE.equals(correoExistente)) {
-                        return Mono.error(new ExcepcionCorreoExistente(EL_CORREO_ELECTRONICO_INGRESADO_YA_SE_ENCUENTRA_REGISTRADO));
+
+        return validacionCorreoExistente(user.getCorreoElectronico())
+                .flatMap(correoExiste -> {
+                    if (Boolean.TRUE.equals(correoExiste)) {
+                        return Mono.error(new ExcepcionCorreoExistente(400, EL_CORREO_ELECTRONICO_INGRESADO_YA_SE_ENCUENTRA_REGISTRADO));
                     } else {
-                        return userRepository.save(user);
+                        return obtenerRol(user.getNombreRol())
+                                .flatMap(rolEncontrado -> {
+                                    user.setIdRol(rolEncontrado.getId());
+                                    return userRepository.save(user);
+                                });
                     }
                 });
 
     }
 
-    private Mono<Boolean> validacionCorreoElectronico(User user) {
+    private Mono<Boolean> validacionCorreoExistente(String correo) {
         return userRepository.findAll()
                 .map(User::getCorreoElectronico)
-                .any(correo -> correo.equals(user.getCorreoElectronico()));
+                .any(correoExistente -> correoExistente.equals(correo));
+    }
+
+    private Mono<Rol> obtenerRol(String nombreRol) {
+        return rolRepository.findAll()
+                .filter(rol -> rol.getNombre().equals(nombreRol))
+                .next();
     }
 }

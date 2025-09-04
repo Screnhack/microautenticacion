@@ -19,7 +19,6 @@ public class PostgreSQLConnectionPool {
 
 	@Bean
 	public ConnectionPool getConnectionConfig(PostgresqlConnectionProperties properties) {
-
         PostgresqlConnectionConfiguration dbConfiguration = PostgresqlConnectionConfiguration.builder()
                 .host(properties.host())
                 .port(properties.port())

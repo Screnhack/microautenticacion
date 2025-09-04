@@ -68,7 +68,7 @@ public class UserRouterRestTest {
     void shouldReturnBadRequest_forInvalidArguments() {
         // Arrange
         when(userUseCase.saveUser(any(User.class)))
-                .thenReturn(Mono.error(new ExcepcionArgumentos("El nombre no puede ser nulo")));
+                .thenReturn(Mono.error(new ExcepcionArgumentos(400, "El nombre no puede ser nulo")));
 
         // Act & Assert
         webTestClient.post().uri("/api/v1/usuarios")
@@ -86,7 +86,7 @@ public class UserRouterRestTest {
     void shouldReturnBadRequest_forExistingEmail() {
         // Arrange
         when(userUseCase.saveUser(any(User.class)))
-                .thenReturn(Mono.error(new ExcepcionCorreoExistente("El correo ya existe")));
+                .thenReturn(Mono.error(new ExcepcionCorreoExistente(400, "El correo ya existe")));
 
         // Act & Assert
         webTestClient.post().uri("/api/v1/usuarios")

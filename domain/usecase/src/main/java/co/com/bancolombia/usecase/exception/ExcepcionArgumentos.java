@@ -1,9 +1,14 @@
 package co.com.bancolombia.usecase.exception;
 
-public class ExcepcionArgumentos extends RuntimeException{
-    private static final long serialVersionUID = 1L;
+import lombok.Getter;
 
-    public ExcepcionArgumentos(String mensaje) {
+@Getter
+public class ExcepcionArgumentos extends RuntimeException {
+    private static final long serialVersionUID = 1L;
+    private final int codigo;
+
+    public ExcepcionArgumentos(int codigo, String mensaje) {
         super(mensaje);
+        this.codigo = codigo ;
     }
 }
