@@ -33,7 +33,7 @@ public class UserUseCase {
         return validacionCorreoElectronico(user)
                 .flatMap(correoExistente -> {
                     if (Boolean.TRUE.equals(correoExistente)) {
-                        return Mono.error(new ExcepcionCorreoExistente(EL_CORREO_ELECTRONICO_INGRESADO_YA_SE_ENCUENTRA_REGISTRADO));
+                        return Mono.error(new ExcepcionCorreoExistente(400, EL_CORREO_ELECTRONICO_INGRESADO_YA_SE_ENCUENTRA_REGISTRADO));
                     } else {
                         return userRepository.save(user);
                     }
