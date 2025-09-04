@@ -31,6 +31,7 @@ public class UserHandler {
 
     private final UserUseCase userUseCase;
     private final UserUseCaseValidateEmail userValidateEmail;
+    private final co.com.bancolombia.api.mapper.UserMapper userMapper;
 
     @Operation(
             summary = "Guarda un nuevo usuario",
@@ -40,7 +41,7 @@ public class UserHandler {
                     required = true,
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = User.class)
+                            schema = @Schema(implementation = co.com.bancolombia.api.dto.UserCreateRequest.class)
                     )
             ),
             responses = {
@@ -56,14 +57,15 @@ public class UserHandler {
                             responseCode = "400",
                             description = "Error de validación o usuario existente.",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
-
-
                     )
             }
     )
     public Mono<ServerResponse> listenPOSTSaveUserUsesCase(ServerRequest serverRequest) {
-        return serverRequest.bodyToMono(User.class)
-                .flatMap(userUseCase::saveUser)
+        return serverRequest.bodyToMono(co.com.bancolombia.api.dto.UserCreateRequest.class)
+                .flatMap(userRequest -> {
+                    User user = userMapper.toUser(userRequest);
+                    return userUseCase.saveUser(user);
+                })
                 .flatMap(user -> ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).bodyValue(user))
                 .onErrorResume(ExcepcionArgumentos.class, this::handleError)
                 .onErrorResume(ExcepcionCorreoExistente.class, this::handleError);

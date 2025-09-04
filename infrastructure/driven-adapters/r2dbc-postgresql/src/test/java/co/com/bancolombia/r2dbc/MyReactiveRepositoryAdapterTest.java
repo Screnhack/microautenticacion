@@ -1,5 +1,7 @@
 package co.com.bancolombia.r2dbc;
 
+import co.com.bancolombia.r2dbc.rol.RolMyReactiveRepository;
+import co.com.bancolombia.r2dbc.rol.RolMyReactiveRepositoryAdapter;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -18,11 +20,11 @@ import static org.mockito.Mockito.when;
 class MyReactiveRepositoryAdapterTest {
     // TODO: change four you own tests
 
-    /*@InjectMocks
-    MyReactiveRepositoryAdapter repositoryAdapter;
+    @InjectMocks
+    RolMyReactiveRepositoryAdapter repositoryAdapter;
 
     @Mock
-    MyReactiveRepository repository;
+    RolMyReactiveRepository repository;
 
     @Mock
     ObjectMapper mapper;
@@ -30,7 +32,7 @@ class MyReactiveRepositoryAdapterTest {
     @Test
     void mustFindValueById() {
 
-        //when(repository.findById("1")).thenReturn(Mono.just("test"));
+        when(repository.findById("1")).thenReturn(Mono.just("test"));
         when(mapper.map("test", Object.class)).thenReturn("test");
 
         Mono<Object> result = repositoryAdapter.findById("1");
@@ -42,7 +44,7 @@ class MyReactiveRepositoryAdapterTest {
 
     @Test
     void mustFindAllValues() {
-        //when(repository.findAll()).thenReturn(Flux.just("test"));
+        when(repository.findAll()).thenReturn(Flux.just("test"));
         when(mapper.map("test", Object.class)).thenReturn("test");
 
         Flux<Object> result = repositoryAdapter.findAll();
@@ -64,15 +66,15 @@ class MyReactiveRepositoryAdapterTest {
                 .verifyComplete();
     }
 
-  /*  @Test
+    @Test
     void mustSaveValue() {
-        //when(repository.save("test")).thenReturn(Mono.just("test"));
-        //when(mapper.map("test", Object.class)).thenReturn("test");
+        when(repository.save("test")).thenReturn(Mono.just("test"));
+        when(mapper.map("test", Object.class)).thenReturn("test");
 
-       // Mono<Object> result = repositoryAdapter.save("test");
+        Mono<Object> result = repositoryAdapter.save("test");
 
         StepVerifier.create(result)
                 .expectNextMatches(value -> value.equals("test"))
                 .verifyComplete();
-    }*/
+    }
 }

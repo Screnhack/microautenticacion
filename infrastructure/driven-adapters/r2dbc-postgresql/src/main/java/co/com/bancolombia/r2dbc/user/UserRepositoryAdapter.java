@@ -1,4 +1,4 @@
-package co.com.bancolombia.r2dbc;
+package co.com.bancolombia.r2dbc.user;
 
 import co.com.bancolombia.model.user.User;
 import co.com.bancolombia.r2dbc.entity.UserEntity;

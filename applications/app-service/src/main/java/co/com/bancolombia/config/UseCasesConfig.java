@@ -1,5 +1,6 @@
 package co.com.bancolombia.config;
 
+import co.com.bancolombia.model.rol.gateways.RolRepository;
 import co.com.bancolombia.model.user.gateways.UserRepository;
 import co.com.bancolombia.usecase.user.UserUseCase;
 import co.com.bancolombia.usecase.user.UserUseCaseValidateEmail;
@@ -17,8 +18,8 @@ import org.springframework.context.annotation.FilterType;
 public class UseCasesConfig {
 
     @Bean
-    public UserUseCase userUseCase(UserRepository userRepository) {
-        return new UserUseCase(userRepository);
+    public UserUseCase userUseCase(UserRepository userRepository, RolRepository rolRepository) {
+        return new UserUseCase(userRepository, rolRepository);
     }
 
     @Bean

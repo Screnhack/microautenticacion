@@ -1,15 +1,17 @@
-package co.com.bancolombia.model.user;
+package co.com.bancolombia.api.dto;
 
-import co.com.bancolombia.model.rol.Rol;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Getter
-@Setter
+import java.io.Serializable;
+
+@Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder(toBuilder = true)
-public class User {
-    private Long id;
+public class UserCreateRequest implements Serializable {
     private String nombre;
     private String apellido;
     private String fechaNacimiento;
@@ -18,7 +20,5 @@ public class User {
     private String correoElectronico;
     private Long salarioBase;
     private String password;
-    private Long  idRol;
     private String nombreRol;
-
 }
