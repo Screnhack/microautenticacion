@@ -21,4 +21,10 @@ public interface UserRepository {
      * @return
      */
     Flux<User> findAll();
+
+    /**
+     * @param correo
+     * @return
+     */
+    Mono<User> findByCorreoElectronico(String correo);
 }

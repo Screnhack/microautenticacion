@@ -1,7 +1,12 @@
 package co.com.bancolombia.api.User;
 
+import co.com.bancolombia.api.dto.JwtResponse;
+import co.com.bancolombia.api.mapper.LoginMapper;
+import co.com.bancolombia.api.mapper.UserMapper;
+import co.com.bancolombia.model.autenticacion.Autenticacion;
 import co.com.bancolombia.model.error.Error;
 import co.com.bancolombia.model.user.User;
+import co.com.bancolombia.usecase.autenticacion.AutenticacionUseCase;
 import co.com.bancolombia.usecase.exception.ExcepcionArgumentos;
 import co.com.bancolombia.usecase.exception.ExcepcionCorreoExistente;
 import co.com.bancolombia.usecase.user.UserUseCase;
@@ -17,7 +22,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
@@ -31,7 +38,9 @@ public class UserHandler {
 
     private final UserUseCase userUseCase;
     private final UserUseCaseValidateEmail userValidateEmail;
-    private final co.com.bancolombia.api.mapper.UserMapper userMapper;
+    private final UserMapper userMapper;
+    private final AutenticacionUseCase autenticacionUseCase;
+    private final LoginMapper loginMapper;
 
     @Operation(
             summary = "Guarda un nuevo usuario",
@@ -121,6 +130,16 @@ public class UserHandler {
                                 .bodyValue(emailExists)
                 )
                 .onErrorResume(ExcepcionArgumentos.class, this::handleError);
+    }
+
+    @Operation(summary = "Inicia sesión y genera un JWT", description = "Autentica al usuario y retorna un token JWT para peticiones seguras.")
+    public Mono<ServerResponse> listenPOSTLoginUser(ServerRequest request) {
+        return request.bodyToMono(Autenticacion.class)
+                .flatMap(loginRequest ->
+                        autenticacionUseCase.login(loginRequest.getCorreo(), loginRequest.getPassword())
+                                .flatMap(token -> ServerResponse.ok().bodyValue(new JwtResponse(token)))
+                                .onErrorResume(BadCredentialsException.class, e -> ServerResponse.status(HttpStatus.UNAUTHORIZED).build())
+                );
     }
 
     private Mono<ServerResponse> handleError(RuntimeException e) {
