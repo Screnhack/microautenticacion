@@ -12,7 +12,6 @@ public class argumentValidator {
 
 
     private argumentValidator() {
-        // Constructor privado para evitar instanciación
     }
 
     public static void validarRequeridos(Object valor, String mensaje) {

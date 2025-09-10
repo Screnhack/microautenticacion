@@ -2,7 +2,6 @@ package co.com.bancolombia.usecase.autenticacion;
 
 import co.com.bancolombia.model.autenticacion.gateways.AutenticacionRepository;
 import co.com.bancolombia.model.user.User;
-import co.com.bancolombia.model.user.gateways.UserRepository;
 import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Mono;
 

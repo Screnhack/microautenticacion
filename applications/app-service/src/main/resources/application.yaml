@@ -33,5 +33,5 @@ management:
 cors:
   allowed-origins: "http://localhost:4200,http://localhost:8080"
 jwt:
-  secret: 8a9b7c6d5e4f3a2b1a0f9e8d7c6b5a4a3b2c1d0e9f8a7b6c5d4e3f2a1b0c9d8e7f6a5b4c3d2e1f0a9b8c7d6e5f4a3b2c1d0e9f8a7b6c5d4e3f2a1b0c9d8e7f6a
+  secret: d8206c23d2708ed420f4096768adde814a623e757120184edc98fc74f36951ade397ea9a809b576bf543dc47e7df26d0e723749334c35267507ef755e8f0caaa
   expiration: 3600000

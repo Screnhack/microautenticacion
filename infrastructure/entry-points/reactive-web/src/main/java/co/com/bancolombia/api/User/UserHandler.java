@@ -132,7 +132,33 @@ public class UserHandler {
                 .onErrorResume(ExcepcionArgumentos.class, this::handleError);
     }
 
-    @Operation(summary = "Inicia sesión y genera un JWT", description = "Autentica al usuario y retorna un token JWT para peticiones seguras.")
+    @Operation(
+            summary = "Inicia sesión y genera un JWT",
+            description = "Autentica al usuario y retorna un token JWT para peticiones seguras.",
+            requestBody = @RequestBody(
+                    description = "Credenciales del usuario",
+                    required = true,
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = Autenticacion.class)
+                    )
+            ),
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Autenticación exitosa. Retorna un JWT.",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = JwtResponse.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "401",
+                            description = "Credenciales inválidas o no autorizadas.",
+                            content = @Content
+                    )
+            }
+    )
     public Mono<ServerResponse> listenPOSTLoginUser(ServerRequest request) {
         return request.bodyToMono(Autenticacion.class)
                 .flatMap(loginRequest ->

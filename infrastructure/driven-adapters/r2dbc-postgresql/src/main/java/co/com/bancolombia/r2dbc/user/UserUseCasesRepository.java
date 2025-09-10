@@ -11,9 +11,9 @@ public interface UserUseCasesRepository extends ReactiveCrudRepository<UserEntit
 
     Mono<Boolean> existsByCorreoElectronico(String email);
 
-    @Query("SELECT u.id, u.nombre, u.apellido, u.fecha_nacimiento, u.direccion, u.telefono, u.correo_electronico, u.salario_base, u.password, r.id as id_rol, r.nombre as nombre_rol " +
-            "FROM users u " +
-            "INNER JOIN roles r ON u.id_rol = r.id " +
+    @Query("SELECT u.id_usuario, u.nombre, u.apellido, u.fecha_nacimiento, u.direccion, u.telefono, u.correo_electronico, u.salario_base, u.password, r.id_rol, r.nombre as nombre_rol " +
+            "FROM usuario u " +
+            "INNER JOIN rol r ON u.id_rol = r.id_rol " +
             "WHERE u.correo_electronico = :correoElectronico")
     Mono<User> findByCorreoElectronico(String correoElectronico);
 }

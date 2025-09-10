@@ -41,7 +41,6 @@ public class UserRouterRest {
                     beanMethod = "listenGETValidateUserEmail",
                     operation = @Operation(summary = "verifica el correo existente")
             ),
-            // Ruta de login (debe ser pública)
             @RouterOperation(
                     path = "/api/v1/login",
                     method = RequestMethod.POST,

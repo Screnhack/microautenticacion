@@ -1,4 +1,3 @@
-// api/config/autenticacion/JwtAuthManager.java
 package co.com.bancolombia.api.config.autenticacion;
 
 import co.com.bancolombia.model.user.gateways.UserRepository;
